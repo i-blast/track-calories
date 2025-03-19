@@ -23,6 +23,7 @@ public class User {
     private double weight;
     private double height;
     @Enumerated(EnumType.STRING)
+    @Column(name = "weight_goal")
     private WeightGoal weightGoal;
     private int dailyCalorieIntake;
 }

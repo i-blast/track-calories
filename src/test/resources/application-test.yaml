@@ -6,8 +6,18 @@ spring:
     password: password
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        type: trace
+        show_sql: true
     hibernate:
       ddl-auto: create-drop
-  h2:
-    console:
-      enabled: true
+logging:
+  level:
+    org.hibernate: trace
+    org.hibernate.SQL: trace
+    org.hibernate.orm.jdbc.bind: trace
+    root: trace
