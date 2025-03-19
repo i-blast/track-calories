@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users
     age                  INT              NOT NULL CHECK (age > 0),
     weight               DOUBLE PRECISION NOT NULL CHECK (weight > 0),
     height               DOUBLE PRECISION NOT NULL CHECK (height > 0),
-    weightGoal           VARCHAR(32)      NOT NULL,
+    weight_goal           VARCHAR(255)      NOT NULL,
     daily_calorie_intake INT              NOT NULL
 );
 

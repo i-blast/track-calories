@@ -17,6 +17,7 @@ spring:
         format_sql: true
         highlight_sql: true
 #        type: trace
+
 #logging:
 #  level:
 #    org.hibernate: trace

@@ -1,17 +1,20 @@
 package com.pii.tracker.track_calories.user.repo;
 
+import com.pii.tracker.track_calories.BaseRepositoryTest;
 import com.pii.tracker.track_calories.user.model.User;
 import com.pii.tracker.track_calories.user.model.WeightGoal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @DataJpaTest
-public class UserRepositoryTest {
+public class UserRepositoryTest extends BaseRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
