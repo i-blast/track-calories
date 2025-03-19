@@ -9,3 +9,13 @@ CREATE TABLE IF NOT EXISTS users
     weightGoal           VARCHAR(32)      NOT NULL,
     daily_calorie_intake INT              NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS dishes
+(
+    id            SERIAL PRIMARY KEY,
+    name          VARCHAR(255) NOT NULL,
+    calories      INT          NOT NULL,
+    proteins      INT          NOT NULL,
+    fats          INT          NOT NULL,
+    carbohydrates INT          NOT NULL
+);
