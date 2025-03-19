@@ -5,8 +5,8 @@
         </encoder>
     </appender>
 
-    <logger name="org.hibernate.SQL" level="DEBUG"/>
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+<!--    <logger name="org.hibernate.SQL" level="DEBUG"/>-->
+<!--    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>-->
     <logger name="org.springframework.test.context" level="DEBUG"/>
     <logger name="org.springframework.jdbc.core" level="DEBUG"/>
     <logger name="com.pii.tracker.track_calories" level="DEBUG"/>

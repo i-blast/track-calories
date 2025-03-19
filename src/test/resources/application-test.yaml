@@ -15,9 +15,9 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: create-drop
-logging:
-  level:
-    org.hibernate: trace
-    org.hibernate.SQL: trace
-    org.hibernate.orm.jdbc.bind: trace
-    root: trace
+#logging:
+#  level:
+#    org.hibernate: trace
+#    org.hibernate.SQL: trace
+#    org.hibernate.orm.jdbc.bind: trace
+#    root: trace
