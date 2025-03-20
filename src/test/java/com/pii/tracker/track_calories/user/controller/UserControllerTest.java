@@ -5,11 +5,12 @@ import com.pii.tracker.track_calories.user.model.User;
 import com.pii.tracker.track_calories.user.model.WeightGoal;
 import com.pii.tracker.track_calories.user.service.UserService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -18,12 +19,13 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@AutoConfigureMockMvc
-@SpringBootTest(properties = "spring.config.location=classpath:application-test.yaml")
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(controllers = UserController.class)
 public class UserControllerTest {
 
     @Autowired
@@ -35,8 +37,8 @@ public class UserControllerTest {
 
     @Test
     void createUser_ShouldReturnCreatedUser() throws Exception {
-        User user = createUser();
-        when(userService.createUser(user)).thenReturn(user);
+        var user = createUser();
+        when(userService.createUser(any(User.class))).thenReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
