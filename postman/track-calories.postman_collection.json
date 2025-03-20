@@ -128,7 +128,7 @@
 			"name": "Dish API",
 			"item": [
 				{
-					"name": "Create Dish",
+					"name": "Create Dish Caesar Salad with Chicken",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -140,6 +140,33 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"name\": \"Салат Цезарь с курицей\",\n  \"calories\": 250,\n  \"proteins\": 15,\n  \"fats\": 18,\n  \"carbohydrates\": 8\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/dishes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Dish Raisin Cake",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Кекс с изюмом\",\n  \"calories\": 400,\n  \"proteins\": 7,\n  \"fats\": 20,\n  \"carbohydrates\": 60\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/dishes",
@@ -240,6 +267,58 @@
 				}
 			],
 			"description": "API блюд"
+		},
+		{
+			"name": "Meal API",
+			"item": [
+				{
+					"name": "Create Meal",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": 1,\r\n  \"dishIds\": [1, 2]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/meals",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"meals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Meals by userId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/meals/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"meals",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API для работы с приёмами пищи пользователя"
 		}
 	]
 }

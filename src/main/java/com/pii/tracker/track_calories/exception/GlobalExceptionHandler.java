@@ -1,6 +1,7 @@
 package com.pii.tracker.track_calories.exception;
 
 import com.pii.tracker.track_calories.dish.exception.DishNotFoundException;
+import com.pii.tracker.track_calories.meal.exception.BadMealCreationException;
 import com.pii.tracker.track_calories.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DishNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleDishNotFoundException(DishNotFoundException exc) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", exc.getMessage()));
+    }
+
+    @ExceptionHandler(BadMealCreationException.class)
+    public ResponseEntity<Map<String, String>> handleBadMealCreationException(BadMealCreationException exc) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", exc.getMessage()));

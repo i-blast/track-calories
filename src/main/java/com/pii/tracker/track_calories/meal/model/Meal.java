@@ -30,12 +30,10 @@ public class Meal {
     @PastOrPresent(message = "Дата и время приёма пищи ограничены произошедшим временем")
     private LocalDateTime mealTime;
 
-    @NotNull(message = "Приём пищи должен быть связан с пользователем")
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @NotEmpty(message = "Приём пищи должен содержать хотя бы одно блюдо")
     @ManyToMany
     @JoinTable(
             name = "meal_dishes",
