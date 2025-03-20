@@ -6,12 +6,16 @@ spring:
       maximumPoolSize: 10
       idleTimeout: 30000
       keepaliveTime: 20000
-#    url: jdbc:h2:mem:testdb
-#    driverClassName: org.h2.Driver
-#    username: sa
-#    password: password
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  sql:
+    init:
+      schema-locations: classpath:sql/schema.sql
+      mode: always
   jpa:
-#    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
 #    properties:
 #      hibernate:

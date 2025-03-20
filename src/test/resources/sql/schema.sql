@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS dishes
 CREATE TABLE IF NOT EXISTS meals
 (
     id        SERIAL PRIMARY KEY,
-    user_id   INT       NOT NULL,
-    meal_time TIMESTAMP NOT NULL CHECK (meal_time <= NOW()) DEFAULT CURRENT_TIMESTAMP,
+    user_id   INT NOT NULL,
+    meal_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
