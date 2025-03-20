@@ -2,20 +2,19 @@ package com.pii.tracker.track_calories.user.service;
 
 import com.pii.tracker.track_calories.user.model.User;
 import com.pii.tracker.track_calories.user.model.WeightGoal;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 public class CalorieCalculatorServiceTest {
 
+    @InjectMocks
     private CalorieCalculatorService calorieCalculatorService;
-
-    @BeforeEach
-    void setUp() {
-        calorieCalculatorService = new CalorieCalculatorService();
-    }
 
     @ParameterizedTest
     @CsvSource({
