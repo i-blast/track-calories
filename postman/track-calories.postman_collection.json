@@ -121,7 +121,125 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "API пользователя"
+		},
+		{
+			"name": "Dish API",
+			"item": [
+				{
+					"name": "Create Dish",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Салат Цезарь с курицей\",\n  \"calories\": 250,\n  \"proteins\": 15,\n  \"fats\": 18,\n  \"carbohydrates\": 8\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/dishes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Dishes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/dishes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dish by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/dishes/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"dishes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Dish",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Салат Цезарь с курицей\",\n  \"calories\": 220,\n  \"proteins\": 15,\n  \"fats\": 15,\n  \"carbohydrates\": 8\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/dishes/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"dishes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Dish",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/dishes/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"dishes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API блюд"
 		}
 	]
 }
