@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 import java.util.Optional;
 
+import static com.pii.tracker.track_calories.util.TestDataFactory.createTestUser;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,7 +38,7 @@ public class UserControllerTest {
 
     @Test
     void createUser_ShouldReturnCreatedUser() throws Exception {
-        var user = createUser();
+        var user = createTestUser();
         when(userService.createUser(any(User.class))).thenReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
@@ -52,7 +53,7 @@ public class UserControllerTest {
 
     @Test
     void getAllUsers_ShouldReturnUserList() throws Exception {
-        var users = List.of(createUser());
+        var users = List.of(createTestUser());
         when(userService.getAllUsers()).thenReturn(users);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users")
@@ -64,7 +65,7 @@ public class UserControllerTest {
 
     @Test
     void getUserById_ShouldReturnUser_WhenUserExists() throws Exception {
-        var user = createUser();
+        var user = createTestUser();
         when(userService.getUserById(1L)).thenReturn(Optional.of(user));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1")
@@ -139,16 +140,5 @@ public class UserControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.height", containsString("Рост не может быть более 256 см")));
-    }
-
-    private User createUser() {
-        return User.builder()
-                .name("vasYa")
-                .email("vasYa@ya.ru")
-                .weight(80)
-                .height(175)
-                .age(35)
-                .weightGoal(WeightGoal.LOSE)
-                .build();
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Optional;
 
+import static com.pii.tracker.track_calories.util.TestDataFactory.createTestDish;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,7 +33,7 @@ public class DishControllerTest {
 
     @Test
     void createDish_ShouldReturnCreatedDish() throws Exception {
-        var dish = createDish();
+        var dish = createTestDish();
         when(dishService.createDish(any(Dish.class))).thenReturn(dish);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/dishes")
@@ -100,15 +101,5 @@ public class DishControllerTest {
                         .content(objectMapper.writeValueAsString(invalidDish)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.proteins").exists());
-    }
-
-    private Dish createDish() {
-        return Dish.builder()
-                .name("Салат Цезарь с курицей")
-                .calories(250)
-                .proteins(15)
-                .fats(18)
-                .carbohydrates(8)
-                .build();
     }
 }
