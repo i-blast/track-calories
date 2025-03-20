@@ -36,7 +36,7 @@ public class User {
     @Max(value = 256, message = "Рост не может быть более 256 см")
     private double height;
 
-    @NotNull(message = "Цель по изменению весу обязательна")
+    @NotNull(message = "Цель по изменению веса обязательна")
     @Enumerated(EnumType.STRING)
     @Column(name = "weight_goal")
     private WeightGoal weightGoal;

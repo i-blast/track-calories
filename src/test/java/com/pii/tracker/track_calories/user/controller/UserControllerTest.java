@@ -13,6 +13,10 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
+import java.util.Optional;
+
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -42,6 +46,97 @@ public class UserControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is("vasYa")))
                 .andExpect(jsonPath("$.email", is("vasYa@ya.ru")));
+    }
+
+    @Test
+    void getAllUsers_ShouldReturnUserList() throws Exception {
+        var users = List.of(createUser());
+        when(userService.getAllUsers()).thenReturn(users);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(1)))
+                .andExpect(jsonPath("$[0].name", is("vasYa")));
+    }
+
+    @Test
+    void getUserById_ShouldReturnUser_WhenUserExists() throws Exception {
+        var user = createUser();
+        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("vasYa")))
+                .andExpect(jsonPath("$.email", is("vasYa@ya.ru")));
+    }
+
+    @Test
+    void createUser_ShouldReturnBadRequest_WhenEmailIsMissing() throws Exception {
+        var invalidUser = User.builder()
+                .id(2L)
+                .name("noemail")
+                .email(null)
+                .weight(80)
+                .height(175)
+                .age(35)
+                .weightGoal(WeightGoal.MAINTAIN)
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidUser))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.email", containsString("Email обязателен")));
+    }
+
+    @Test
+    void getUserById_ShouldReturnNotFound_WhenUserDoesNotExist() throws Exception {
+        when(userService.getUserById(1L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void createUser_ShouldReturnBadRequest_WhenWeightGoalIsMissing() throws Exception {
+        var invalidUser = User.builder()
+                .name("NoGoalUser")
+                .email("user@ya.ru")
+                .weight(70)
+                .height(175)
+                .age(30)
+                .weightGoal(null)
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidUser))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.weightGoal", containsString("Цель по изменению веса обязательна")));
+    }
+
+    @Test
+    void createUser_ShouldReturnBadRequest_WhenHeightIsTooHigh() throws Exception {
+        var invalidUser = User.builder()
+                .name("TallUser")
+                .email("tall@ya.ru")
+                .weight(80)
+                .height(512)
+                .age(35)
+                .weightGoal(WeightGoal.MAINTAIN)
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidUser))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.height", containsString("Рост не может быть более 256 см")));
     }
 
     private User createUser() {
