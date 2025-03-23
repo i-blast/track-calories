@@ -3,9 +3,11 @@ package com.pii.tracker.track_calories.report.service;
 import com.pii.tracker.track_calories.dish.model.Dish;
 import com.pii.tracker.track_calories.meal.model.Meal;
 import com.pii.tracker.track_calories.meal.service.MealService;
+import com.pii.tracker.track_calories.report.exception.InvalidDateRangeException;
 import com.pii.tracker.track_calories.user.exception.UserNotFoundException;
 import com.pii.tracker.track_calories.user.model.User;
 import com.pii.tracker.track_calories.user.service.UserService;
+import org.apache.http.auth.InvalidCredentialsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -150,8 +152,8 @@ public class ReportServiceTest {
     void getMealHistory_WhenInvalidDateRange_ShouldThrowException() {
         var start = LocalDate.now();
         var end = LocalDate.now().minusDays(1);
-        var exception = assertThrows(IllegalArgumentException.class,
+        var exception = assertThrows(InvalidDateRangeException.class,
                 () -> reportService.getMealHistory(1L, start, end));
-        assertEquals("Некорректный диапазон дат", exception.getMessage());
+        assertEquals("Некорректный диапазон дат: начальная дата должна быть раньше конечной.", exception.getMessage());
     }
 }
