@@ -1,22 +1,16 @@
-package com.pii.tracker.track_calories.integration.api.meal;
+package com.pii.tracker.track_calories.integration.meal;
 
 import com.pii.tracker.track_calories.dish.repo.DishRepository;
+import com.pii.tracker.track_calories.integration.BaseIntegrationTest;
 import com.pii.tracker.track_calories.meal.dto.CreateMealRequestDTO;
 import com.pii.tracker.track_calories.meal.repo.MealRepository;
 import com.pii.tracker.track_calories.user.repo.UserRepository;
 import io.restassured.RestAssured;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
@@ -25,9 +19,7 @@ import static com.pii.tracker.track_calories.util.TestDataFactory.createTestUser
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 
-@Testcontainers
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MealControllerTest {
+public class MealControllerTest extends BaseIntegrationTest {
 
     @Autowired
     MealRepository mealRepository;
@@ -35,9 +27,6 @@ public class MealControllerTest {
     UserRepository userRepository;
     @Autowired
     DishRepository dishRepository;
-
-    @LocalServerPort
-    private Integer port;
 
     private Long userId;
     private Long dish1Id;
@@ -109,36 +98,5 @@ public class MealControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .body("size()", equalTo(0));
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Container
-    static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:17.2")
-            .withDatabaseName("testdb")
-            .withInitScript("sql/schema.sql")
-            .withUsername("testuser")
-            .withPassword("testpassword")
-            .withReuse(true);
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-        registry.add("spring.datasource.driver-class-name", postgreSQLContainer::getDriverClassName);
-        registry.add("spring.datasource.hikari.maxLifetime", () -> "600000");
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        postgreSQLContainer.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgreSQLContainer.stop();
     }
 }
