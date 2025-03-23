@@ -28,9 +28,7 @@ public class MealService {
     private final MealMapper mealMapper;
 
     public MealResponseDTO createMeal(CreateMealRequestDTO dto) {
-        User user = userService
-                .getUserById(dto.userId())
-                .orElseThrow(() -> new UserNotFoundException());
+        var user = userService.getUserById(dto.userId());
         if (dto.dishIds() == null || dto.dishIds().isEmpty()) {
             throw new BadMealCreationException("Прием пищи должен содержать хотя бы одно блюдо");
         }

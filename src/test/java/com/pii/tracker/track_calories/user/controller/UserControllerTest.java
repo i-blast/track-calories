@@ -90,7 +90,7 @@ public class UserControllerTest {
 
     @Test
     void getUserById_ShouldReturnUser_WhenUserExists() throws Exception {
-        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -101,8 +101,7 @@ public class UserControllerTest {
 
     @Test
     void getUserById_ShouldReturnNotFound_WhenUserDoesNotExist() throws Exception {
-        when(userService.getUserById(1L)).thenReturn(Optional.empty());
-
+        when(userService.getUserById(1L)).thenThrow(new UserNotFoundException("Пользователь не найден id=1"));
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

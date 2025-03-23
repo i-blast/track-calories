@@ -36,7 +36,7 @@ public class ReportService {
         if (date == null) {
             date = LocalDate.now();
         }
-        userService.getUserById(userId).orElseThrow(() -> new UserNotFoundException("Пользователь не найден id=" + userId));
+        userService.getUserById(userId);
 
         var meals = mealService.getMealsByUserAndDateRange(userId, startOfDay(date), endOfDay(date));
         var totalCalories = meals.stream()
@@ -61,8 +61,7 @@ public class ReportService {
         if (date == null) {
             date = LocalDate.now();
         }
-        var user = userService.getUserById(userId)
-                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден id=" + userId));
+        var user = userService.getUserById(userId);
 
         var totalCalories = mealService.getMealsByUserAndDateRange(userId, startOfDay(date), endOfDay(date))
                 .stream()
@@ -86,8 +85,7 @@ public class ReportService {
         if (start == null || end == null || start.isAfter(end)) {
             throw new IllegalArgumentException("Некорректный диапазон дат");
         }
-        userService.getUserById(userId)
-                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден id=" + userId));
+        var user = userService.getUserById(userId);
 
         List<MealHistoryResponse> history = new ArrayList<>();
         for (var date = start; !date.isAfter(end); date = date.plusDays(1)) {

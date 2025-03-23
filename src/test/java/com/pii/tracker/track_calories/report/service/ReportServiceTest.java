@@ -53,12 +53,11 @@ public class ReportServiceTest {
         var date = LocalDate.now();
         var meal = createTestMeal(user, List.of(testDish), LocalDateTime.now());
         when(mealService.getMealsByUserAndDateRange(1L, startOfDay(date), endOfDay(date))).thenReturn(List.of(meal));
-        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(user);
 
         var response = reportService.getDailyReport(1L, date);
         assertEquals(1, response.meals().size());
         assertEquals(250, response.totalCalories());
-
         verify(mealService, times(1)).getMealsByUserAndDateRange(1L, startOfDay(date), endOfDay(date));
         verify(userService, times(1)).getUserById(1L);
     }
@@ -67,12 +66,11 @@ public class ReportServiceTest {
     void getDailyReport_WhenNoMeals_ShouldReturnZeroCalories() {
         var date = LocalDate.now();
         when(mealService.getMealsByUserAndDateRange(1L, startOfDay(date), endOfDay(date))).thenReturn(List.of());
-        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(user);
 
         var response = reportService.getDailyReport(1L, date);
         assertEquals(0, response.totalCalories());
         assertEquals(0, response.meals().size());
-
         verify(mealService, times(1)).getMealsByUserAndDateRange(1L, startOfDay(date), endOfDay(date));
         verify(userService, times(1)).getUserById(1L);
     }
@@ -80,11 +78,10 @@ public class ReportServiceTest {
     @Test
     void getDailyReport_WhenUserNotFound_ShouldThrowException() {
         var date = LocalDate.now();
-        when(userService.getUserById(1L)).thenReturn(Optional.empty());
+        when(userService.getUserById(1L)).thenThrow(new UserNotFoundException("Пользователь не найден id=1"));;;
 
         var exception = assertThrows(UserNotFoundException.class,
                 () -> reportService.getDailyReport(1L, date));
-
         assertEquals("Пользователь не найден id=1", exception.getMessage());
         verify(userService, times(1)).getUserById(1L);
     }
@@ -93,7 +90,7 @@ public class ReportServiceTest {
     void checkCalorieLimit_ShouldReturnTrue_WhenCaloriesWithinLimit() {
         var meal = createTestMeal(user, List.of(testDish), LocalDateTime.now());
         var date = LocalDate.now();
-        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(user);
         when(mealService.getMealsByUserAndDateRange(1L, startOfDay(date), endOfDay(date)))
                 .thenReturn(List.of(meal));
 
@@ -109,7 +106,7 @@ public class ReportServiceTest {
                 .build();
         var meal = createTestMeal(user, List.of(highCalorieDish), LocalDateTime.now());
         var date = LocalDate.now();
-        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(user);
         when(mealService.getMealsByUserAndDateRange(1L, startOfDay(date), endOfDay(date)))
                 .thenReturn(List.of(meal));
 
@@ -120,8 +117,7 @@ public class ReportServiceTest {
     @Test
     void checkCalorieLimit_WhenUserNotFound_ShouldThrowException() {
         var date = LocalDate.now();
-        when(userService.getUserById(1L)).thenReturn(Optional.empty());
-
+        when(userService.getUserById(1L)).thenThrow(new UserNotFoundException("Пользователь не найден id=1"));
         var exception = assertThrows(UserNotFoundException.class,
                 () -> reportService.checkCalorieLimit(1L, date));
         assertEquals("Пользователь не найден id=1", exception.getMessage());
@@ -132,7 +128,7 @@ public class ReportServiceTest {
         var meal = createTestMeal(user, List.of(testDish), LocalDateTime.now().minusDays(2L));
         var start = LocalDate.now().minusDays(7);
         var end = LocalDate.now();
-        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(user);
         when(mealService.getMealsByUserAndDateRange(eq(1L), any(), any())).thenReturn(List.of(meal));
 
         var history = reportService.getMealHistory(1L, start, end);
@@ -144,8 +140,7 @@ public class ReportServiceTest {
     void getMealHistory_WhenUserNotFound_ShouldThrowException() {
         var start = LocalDate.now().minusDays(7);
         var end = LocalDate.now();
-        when(userService.getUserById(1L)).thenReturn(Optional.empty());
-
+        when(userService.getUserById(1L)).thenThrow(new UserNotFoundException("Пользователь не найден id=1"));
         var exception = assertThrows(UserNotFoundException.class,
                 () -> reportService.getMealHistory(1L, start, end));
         assertEquals("Пользователь не найден id=1", exception.getMessage());
@@ -155,7 +150,6 @@ public class ReportServiceTest {
     void getMealHistory_WhenInvalidDateRange_ShouldThrowException() {
         var start = LocalDate.now();
         var end = LocalDate.now().minusDays(1);
-
         var exception = assertThrows(IllegalArgumentException.class,
                 () -> reportService.getMealHistory(1L, start, end));
         assertEquals("Некорректный диапазон дат", exception.getMessage());

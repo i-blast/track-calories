@@ -61,16 +61,14 @@ public class UserServiceTest {
     void testGetUserById() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         var foundUser = userService.getUserById(1L);
-        assertTrue(foundUser.isPresent());
-        assertEquals(user.getName(), foundUser.get().getName());
+        assertEquals(user.getName(), foundUser.getName());
         verify(userRepository, times(1)).findById(1L);
     }
 
     @Test
     void testGetUserById_NotFound() {
         when(userRepository.findById(2L)).thenReturn(Optional.empty());
-        var foundUser = userService.getUserById(2L);
-        assertFalse(foundUser.isPresent());
+        assertThrows(UserNotFoundException.class, () -> userService.getUserById(2L));
         verify(userRepository, times(1)).findById(2L);
     }
 

@@ -71,7 +71,7 @@ public class MealServiceTest {
 
     @Test
     void testCreateMeal_Success() {
-        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(user);
         when(dishService.findAllById(dishIds)).thenReturn(dishes);
         when(mealRepository.save(any(Meal.class))).thenReturn(meal);
         when(mealMapper.toDto(any(Meal.class))).thenReturn(mealResponseDTO);
@@ -82,7 +82,7 @@ public class MealServiceTest {
 
     @Test
     void testCreateMeal_UserNotFound() {
-        when(userService.getUserById(1L)).thenReturn(Optional.empty());
+        when(userService.getUserById(1L)).thenThrow(UserNotFoundException.class);
         assertThrows(UserNotFoundException.class, () -> {
             mealService.createMeal(createMealRequestDTO);
         });
@@ -93,7 +93,7 @@ public class MealServiceTest {
 
     @Test
     void testCreateMeal_NoDishes() {
-        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(user);
         var invalidDTO = new CreateMealRequestDTO(1L, List.of());
         assertThrows(BadMealCreationException.class, () -> {
             mealService.createMeal(invalidDTO);
@@ -102,7 +102,7 @@ public class MealServiceTest {
 
     @Test
     void testCreateMeal_SomeDishesNotFound() {
-        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(user);
         when(dishService.findAllById(dishIds)).thenReturn(List.of(dishes.get(0)));
         assertThrows(BadMealCreationException.class, () -> {
             mealService.createMeal(createMealRequestDTO);
