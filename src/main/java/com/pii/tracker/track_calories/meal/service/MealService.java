@@ -2,7 +2,6 @@ package com.pii.tracker.track_calories.meal.service;
 
 import com.pii.tracker.track_calories.dish.exception.DishNotFoundException;
 import com.pii.tracker.track_calories.dish.model.Dish;
-import com.pii.tracker.track_calories.dish.repo.DishRepository;
 import com.pii.tracker.track_calories.dish.service.DishService;
 import com.pii.tracker.track_calories.meal.dto.CreateMealRequestDTO;
 import com.pii.tracker.track_calories.meal.dto.MealResponseDTO;
@@ -12,7 +11,6 @@ import com.pii.tracker.track_calories.meal.model.Meal;
 import com.pii.tracker.track_calories.meal.repo.MealRepository;
 import com.pii.tracker.track_calories.user.exception.UserNotFoundException;
 import com.pii.tracker.track_calories.user.model.User;
-import com.pii.tracker.track_calories.user.repo.UserRepository;
 import com.pii.tracker.track_calories.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

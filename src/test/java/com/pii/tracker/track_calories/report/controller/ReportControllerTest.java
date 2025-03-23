@@ -1,7 +1,9 @@
 package com.pii.tracker.track_calories.report.controller;
 
 import com.pii.tracker.track_calories.exception.GlobalExceptionHandler;
+import com.pii.tracker.track_calories.report.dto.CalorieLimitResponse;
 import com.pii.tracker.track_calories.report.dto.DailyReportResponse;
+import com.pii.tracker.track_calories.report.dto.MealHistoryResponse;
 import com.pii.tracker.track_calories.report.service.ReportService;
 import com.pii.tracker.track_calories.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -80,6 +82,48 @@ public class ReportControllerTest {
                         .param("date", "invalid-date")
                         .accept("application/json"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void checkCalorieLimit_ShouldReturnTrue_WhenWithinLimit() throws Exception {
+        when(reportService.checkCalorieLimit(1L, date)).thenReturn(new CalorieLimitResponse(true));
+
+        mockMvc.perform(get("/api/users/1/reports/is-within-limit")
+                        .param("date", date.toString())
+                        .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.isWithinLimit").value(true));
+
+        verify(reportService, times(1)).checkCalorieLimit(1L, date);
+    }
+
+    @Test
+    void checkCalorieLimit_ShouldReturnFalse_WhenExceededLimit() throws Exception {
+        when(reportService.checkCalorieLimit(1L, date)).thenReturn(new CalorieLimitResponse(false));
+
+        mockMvc.perform(get("/api/users/1/reports/is-within-limit")
+                        .param("date", date.toString())
+                        .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.isWithinLimit").value(false));
+
+        verify(reportService, times(1)).checkCalorieLimit(1L, date);
+    }
+
+    @Test
+    void getMealHistory_ShouldReturnHistory() throws Exception {
+        var historyResponse = new MealHistoryResponse(date, 1200, List.of());
+        when(reportService.getMealHistory(1L, date.minusDays(7), date)).thenReturn(List.of(historyResponse));
+
+        mockMvc.perform(get("/api/users/1/reports/history")
+                        .param("start", date.minusDays(7).toString())
+                        .param("end", date.toString())
+                        .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$[0].totalCalories").value(1200));
+
+        verify(reportService, times(1)).getMealHistory(1L, date.minusDays(7), date);
     }
 }
 
