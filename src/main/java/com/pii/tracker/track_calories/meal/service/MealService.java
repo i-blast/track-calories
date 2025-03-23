@@ -9,8 +9,6 @@ import com.pii.tracker.track_calories.meal.exception.BadMealCreationException;
 import com.pii.tracker.track_calories.meal.mapper.MealMapper;
 import com.pii.tracker.track_calories.meal.model.Meal;
 import com.pii.tracker.track_calories.meal.repo.MealRepository;
-import com.pii.tracker.track_calories.user.exception.UserNotFoundException;
-import com.pii.tracker.track_calories.user.model.User;
 import com.pii.tracker.track_calories.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
