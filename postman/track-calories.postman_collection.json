@@ -278,7 +278,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"userId\": 1,\r\n  \"dishIds\": [1, 2]\r\n}\r\n",
+							"raw": "{\r\n  \"userId\": 1,\r\n  \"dishIds\": [2, 3]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -304,13 +304,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/meals/1",
+							"raw": "{{baseUrl}}/api/meals/user/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"meals",
+								"user",
 								"1"
 							]
 						}
@@ -319,6 +320,97 @@
 				}
 			],
 			"description": "API для работы с приёмами пищи пользователя"
+		},
+		{
+			"name": "Report API",
+			"item": [
+				{
+					"name": "Get Daily Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/1/reports/daily?date=2025-03-23",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"reports",
+								"daily"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-03-23"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Meal History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/1/reports/history?start=2025-03-20&end=2025-03-27",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"reports",
+								"history"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "2025-03-20"
+								},
+								{
+									"key": "end",
+									"value": "2025-03-27"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Calorie Limit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/1/reports/is-within-limit?date=2025-03-23",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"reports",
+								"is-within-limit"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-03-23"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "API генерации отчётов"
 		}
 	]
 }
