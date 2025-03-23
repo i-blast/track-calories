@@ -19,7 +19,7 @@ import static com.pii.tracker.track_calories.util.TestDataFactory.createTestUser
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 
-public class MealControllerTest extends BaseIntegrationTest {
+public class MealApiTest extends BaseIntegrationTest {
 
     @Autowired
     MealRepository mealRepository;
