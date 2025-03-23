@@ -3,7 +3,6 @@ package com.pii.tracker.track_calories.meal.model;
 import com.pii.tracker.track_calories.dish.model.Dish;
 import com.pii.tracker.track_calories.user.model.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;

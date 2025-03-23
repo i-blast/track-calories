@@ -1,8 +1,13 @@
 package com.pii.tracker.track_calories.util;
 
 import com.pii.tracker.track_calories.dish.model.Dish;
+import com.pii.tracker.track_calories.meal.model.Meal;
 import com.pii.tracker.track_calories.user.model.User;
 import com.pii.tracker.track_calories.user.model.WeightGoal;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 public final class TestDataFactory {
 
@@ -24,6 +29,18 @@ public final class TestDataFactory {
                 .proteins(15)
                 .fats(18)
                 .carbohydrates(8)
+                .build();
+    }
+
+    public static Meal createTestMeal(
+            User user,
+            Collection<Dish> dishes,
+            LocalDateTime mealTime
+    ) {
+        return Meal.builder()
+                .user(user)
+                .dishes(List.copyOf(dishes))
+                .mealTime(mealTime)
                 .build();
     }
 
