@@ -46,6 +46,9 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException("Пользователь не найден id=" + id);
+        }
         userRepository.deleteById(id);
     }
 }

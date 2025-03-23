@@ -119,8 +119,21 @@ public class UserServiceTest {
 
     @Test
     void testDeleteUser() {
+        when(userRepository.existsById(1L)).thenReturn(true);
         doNothing().when(userRepository).deleteById(1L);
         userService.deleteUser(1L);
+        verify(userRepository, times(1)).existsById(1L);
         verify(userRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void testDeleteUser_NotFound() {
+        when(userRepository.existsById(2L)).thenReturn(false);
+        var unfException = assertThrows(UserNotFoundException.class, () -> {
+            userService.deleteUser(2L);
+        });
+        assertEquals("Пользователь не найден id=2", unfException.getMessage());
+        verify(userRepository, times(1)).existsById(2L);
+        verify(userRepository, never()).deleteById(any());
     }
 }
