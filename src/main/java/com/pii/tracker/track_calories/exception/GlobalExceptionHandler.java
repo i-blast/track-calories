@@ -2,6 +2,7 @@ package com.pii.tracker.track_calories.exception;
 
 import com.pii.tracker.track_calories.dish.exception.DishNotFoundException;
 import com.pii.tracker.track_calories.meal.exception.BadMealCreationException;
+import com.pii.tracker.track_calories.report.exception.InvalidDateRangeException;
 import com.pii.tracker.track_calories.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleBadMealCreationException(BadMealCreationException exc) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", exc.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidDateRangeException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidDateRangeException(InvalidDateRangeException exc) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("error", exc.getMessage()));
     }
 

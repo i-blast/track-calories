@@ -19,17 +19,22 @@ public final class TestDataFactory {
                 .height(175)
                 .age(35)
                 .weightGoal(WeightGoal.LOSE)
+                .dailyCalorieIntake(2000)
                 .build();
     }
 
-    public static Dish createTestDish() {
+    public static Dish createTestDish(int calories) {
         return Dish.builder()
                 .name("Салат Цезарь с курицей")
-                .calories(250)
+                .calories(calories)
                 .proteins(15)
                 .fats(18)
                 .carbohydrates(8)
                 .build();
+    }
+
+    public static Dish createTestDish() {
+        return createTestDish(250);
     }
 
     public static Meal createTestMeal(

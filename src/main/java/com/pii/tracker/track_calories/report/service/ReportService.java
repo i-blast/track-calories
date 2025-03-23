@@ -6,6 +6,7 @@ import com.pii.tracker.track_calories.meal.service.MealService;
 import com.pii.tracker.track_calories.report.dto.CalorieLimitResponse;
 import com.pii.tracker.track_calories.report.dto.DailyReportResponse;
 import com.pii.tracker.track_calories.report.dto.MealHistoryResponse;
+import com.pii.tracker.track_calories.report.exception.InvalidDateRangeException;
 import com.pii.tracker.track_calories.user.exception.UserNotFoundException;
 import com.pii.tracker.track_calories.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -83,7 +84,7 @@ public class ReportService {
      */
     public List<MealHistoryResponse> getMealHistory(Long userId, LocalDate start, LocalDate end) {
         if (start == null || end == null || start.isAfter(end)) {
-            throw new IllegalArgumentException("Некорректный диапазон дат");
+            throw new InvalidDateRangeException("Некорректный диапазон дат: начальная дата должна быть раньше конечной.");
         }
         var user = userService.getUserById(userId);
 

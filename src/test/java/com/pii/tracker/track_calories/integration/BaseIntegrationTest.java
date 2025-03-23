@@ -1,13 +1,10 @@
 package com.pii.tracker.track_calories.integration;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
@@ -17,13 +14,16 @@ public abstract class BaseIntegrationTest {
     @LocalServerPort
     protected Integer port;
 
-    @Container
-    static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:17.2")
-            .withDatabaseName("testdb")
-            .withInitScript("sql/schema.sql")
-            .withUsername("testuser")
-            .withPassword("testpassword")
-            .withReuse(true);
+    protected static final PostgreSQLContainer<?> postgreSQLContainer;
+
+    static {
+        postgreSQLContainer = new PostgreSQLContainer<>("postgres:17.2")
+                .withDatabaseName("testdb")
+                .withInitScript("sql/schema.sql")
+                .withUsername("testuser")
+                .withPassword("testpassword");
+        postgreSQLContainer.start();
+    }
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -31,16 +31,5 @@ public abstract class BaseIntegrationTest {
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
         registry.add("spring.datasource.driver-class-name", postgreSQLContainer::getDriverClassName);
-        registry.add("spring.datasource.hikari.maxLifetime", () -> "600000");
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        postgreSQLContainer.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgreSQLContainer.stop();
     }
 }
