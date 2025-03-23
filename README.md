@@ -46,6 +46,7 @@
 ## 💡TODO
 
 - flyway migrations
+- split into api & report generating microservices
 - 
 
 ### 

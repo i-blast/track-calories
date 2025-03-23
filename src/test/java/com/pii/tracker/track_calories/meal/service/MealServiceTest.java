@@ -1,7 +1,7 @@
 package com.pii.tracker.track_calories.meal.service;
 
 import com.pii.tracker.track_calories.dish.model.Dish;
-import com.pii.tracker.track_calories.dish.repo.DishRepository;
+import com.pii.tracker.track_calories.dish.service.DishService;
 import com.pii.tracker.track_calories.meal.dto.CreateMealRequestDTO;
 import com.pii.tracker.track_calories.meal.dto.MealResponseDTO;
 import com.pii.tracker.track_calories.meal.exception.BadMealCreationException;
@@ -10,7 +10,7 @@ import com.pii.tracker.track_calories.meal.model.Meal;
 import com.pii.tracker.track_calories.meal.repo.MealRepository;
 import com.pii.tracker.track_calories.user.exception.UserNotFoundException;
 import com.pii.tracker.track_calories.user.model.User;
-import com.pii.tracker.track_calories.user.repo.UserRepository;
+import com.pii.tracker.track_calories.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,9 +33,9 @@ public class MealServiceTest {
     @Mock
     private MealRepository mealRepository;
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
     @Mock
-    private DishRepository dishRepository;
+    private DishService dishService;
     @Mock
     private MealMapper mealMapper;
     @InjectMocks
@@ -71,8 +71,8 @@ public class MealServiceTest {
 
     @Test
     void testCreateMeal_Success() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(dishRepository.findAllById(dishIds)).thenReturn(dishes);
+        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(dishService.findAllById(dishIds)).thenReturn(dishes);
         when(mealRepository.save(any(Meal.class))).thenReturn(meal);
         when(mealMapper.toDto(any(Meal.class))).thenReturn(mealResponseDTO);
         var result = mealService.createMeal(createMealRequestDTO);
@@ -82,18 +82,18 @@ public class MealServiceTest {
 
     @Test
     void testCreateMeal_UserNotFound() {
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        when(userService.getUserById(1L)).thenReturn(Optional.empty());
         assertThrows(UserNotFoundException.class, () -> {
             mealService.createMeal(createMealRequestDTO);
         });
-        verify(userRepository, times(1)).findById(1L);
-        verify(dishRepository, never()).findAllById(any());
+        verify(userService, times(1)).getUserById(1L);
+        verify(dishService, never()).findAllById(any());
         verify(mealRepository, never()).save(any());
     }
 
     @Test
     void testCreateMeal_NoDishes() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
         var invalidDTO = new CreateMealRequestDTO(1L, List.of());
         assertThrows(BadMealCreationException.class, () -> {
             mealService.createMeal(invalidDTO);
@@ -102,8 +102,8 @@ public class MealServiceTest {
 
     @Test
     void testCreateMeal_SomeDishesNotFound() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(dishRepository.findAllById(dishIds)).thenReturn(List.of(dishes.get(0)));
+        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(dishService.findAllById(dishIds)).thenReturn(List.of(dishes.get(0)));
         assertThrows(BadMealCreationException.class, () -> {
             mealService.createMeal(createMealRequestDTO);
         });

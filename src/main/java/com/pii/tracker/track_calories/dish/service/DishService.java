@@ -44,4 +44,8 @@ public class DishService {
     public void deleteDish(Long id) {
         dishRepository.deleteById(id);
     }
+
+    public List<Dish> findAllById(List<Long> longs) {
+        return dishRepository.findAllById(longs);
+    }
 }
